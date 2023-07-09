@@ -1,0 +1,41 @@
+# Defaults for screen
+
+# Change the escape character from Ctrl-a (which is already used for 
+# start-of-line) to something else - Ctrl-` is a popular choice.
+# The second character is how to get a literal one of the first character
+#escape ^``
+#escape ``
+#escape ^Gg
+escape ``
+
+# Make the searchable scrollback buffer big
+defscrollback 100000
+
+# By default erase to the background colour
+defbce on
+
+# Turn on a permenant status line if the terminal doesn't have one
+hardstatus lastline
+hardstatus alwayslastline "%h"
+hardstatus string "Screen: %n (%t) %h"
+#hardstatus string '%{= wk}[ %h %{wk} ][ %{b}%w %{wk}][ %m-%d %c %{wk}]'
+
+# Display messages for longer than the default 5s so you can read them
+msgwait 20
+
+# Turn off the startup message
+startup_message off
+
+# Turn the visual bell on or off (you choose)
+vbell on
+
+# Prevent scrollbar being disabled
+termcapinfo xterm* ti@:te@
+
+# Setup tab bar
+caption always "%{= wk}%C%A | %{b}%w"
+
+# Auto-title tabs
+shelltitle '> |idle'
+shelltitle '$ |idle'
+multiuser on
