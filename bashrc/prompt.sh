@@ -35,8 +35,6 @@
 #PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 
-BASE_PS1="\[$TITLE\]\[$DARK_RED\]$TIME\[$NC\] \[$GREEN\]$HOST\[$NC\]:\[$LIGHT_BLUE\]$LOCATION\[$NC\]"
-
 function make_prompt () {
     local exit_status=$? exit_colour
     local git_branch venv
@@ -56,7 +54,8 @@ function make_prompt () {
         git_branch="($git_branch)"
     fi
 
-    export PS1="$venv$BASE_PS1\[$BROWN\]$git_branch\[$NC\]\[$exit_colour\]\$\[$NC\]"
+    export PS1="$venv\[$DARK_RED\]\t\[$NC\] \[$GREEN\]\h\[$NC\]:\[$LIGHT_BLUE\]\W/\[$NC\]\[$BROWN\]$git_branch\[$NC\]\[$exit_colour\]\$\[$NC\]"
 }
+
 PROMPT_COMMAND=make_prompt
 export PS2=">"
