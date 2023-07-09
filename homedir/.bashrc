@@ -1,19 +1,14 @@
 # shellcheck shell=bash
 
-THIS_DIR=$(dirname "${BASH_SOURCE[0]}")
-
-# Set up PATH
-export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
 #-------------------------------------------------------------
 # Source global definitions (if any)
 #-------------------------------------------------------------
 
-for file in /etc/bashrc /etc/bash.bashrc; do
-    if [[ -f $file ]]; then
-        source "$file"
-    fi
-done
+# for file in /etc/bashrc /etc/bash.bashrc; do
+#     if [[ -f $file ]]; then
+#         source "$file"
+#     fi
+# done
 
 #-------------------------------------------------------------
 # General exports
@@ -49,10 +44,8 @@ export LC_ALL=C
 # History
 #-------------------------------------------------------------
 
-# Bash history
 export HISTSIZE=100000
 HISTFILESIZE=10000
-
 
 # Don't store whitespace or commands that are the same as the previous one.
 export HISTCONTROL=ignoredups:ignorespace
@@ -79,10 +72,26 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
 
+shopt -s nullglob
+
 #-------------------------------------------------------------
 # Include other files
 #-------------------------------------------------------------
 
-for f in "$THIS_DIR"/*.sh; do
-    source "$f"
+for file in "$(dirname "$(realpath "${BASH_SOURCE[0]}")")"/../bashrc/*.sh; do
+    source "$file"
+done
+
+# Set up PATH
+for path in \
+    /bin \
+    /sbin \
+    /usr/bin \
+    /usr/sbin \
+    /usr/local/bin \
+    /usr/local/sbin \
+    ~/.local/bin \
+    ~/bin
+do
+    pathmunge "$path"
 done

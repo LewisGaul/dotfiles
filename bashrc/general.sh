@@ -26,6 +26,7 @@ alias location='echo $HOSTNAME:$(pwd)'
 function cdls () {
     cd "$1" && la
 }
+
 function mkcd () {
     mkdir "$1"; cd "$1"
 }
@@ -33,6 +34,18 @@ function mkcd () {
 # Check definition of a function.
 function func () {
     type -a "$1"
+}
+
+pathmunge () {
+    local varname=$2
+    varname=${varname:=PATH}
+    if [[ ! ${!varname} ]]; then
+        export "$varname=$1";
+    else
+        if [[ ":${!varname}:" != *":$1:"* ]]; then
+            export "$varname=$1:${!varname};"
+        fi;
+    fi
 }
 
 

@@ -1,14 +1,5 @@
 # shellcheck shell=bash
 
-git_branch () { git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'; }
-
-HOST='\033[02;36m\]\h'; HOST=' '$HOST
-TIME='\033[01;31m\]\t \033[01;32m\]'
-LOCATION=' \033[01;34m\]`pwd | sed "s#\(/[^/]\{1,\}/[^/]\{1,\}/[^/]\{1,\}/\).*\(/[^/]\{1,\}/[^/]\{1,\}\)/\{0,1\}#\1_\2#g"`'
-BRANCH=' \033[00;33m\]$(git_branch)\[\033[00m\]\n\$ '
-PS1=$TIME$USER$HOST$LOCATION$BRANCH
-PS2='\[\033[01;36m\]>'
-
 # Set the format of and the information contained in your prompt using the
 # following values separated by your choice of punctuation etc. It is 
 # traditional, but by no means universal to end with a '$ '
@@ -42,3 +33,30 @@ PS2='\[\033[01;36m\]>'
 #PS1="\h$ "
 #
 #PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+
+BASE_PS1="\[$TITLE\]\[$DARK_RED\]$TIME\[$NC\] \[$GREEN\]$HOST\[$NC\]:\[$LIGHT_BLUE\]$LOCATION\[$NC\]"
+
+function make_prompt () {
+    local exit_status=$? exit_colour
+    local git_branch venv
+
+    if [[ $exit_status == 0 ]]; then
+        local exit_colour=$WHITE
+    else
+        local exit_colour=$RED
+    fi
+
+    if [[ $VIRTUAL_ENV && ! "${VIRTUAL_ENV_DISABLE_PROMPT:-}" ]]; then
+        venv="($(basename "$VIRTUAL_ENV")) "
+    fi
+
+    git_branch=$(git branch 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+    if [[ $git_branch ]]; then
+        git_branch="($git_branch)"
+    fi
+
+    export PS1="$venv$BASE_PS1\[$BROWN\]$git_branch\[$NC\]\[$exit_colour\]\$\[$NC\]"
+}
+PROMPT_COMMAND=make_prompt
+export PS2=">"
