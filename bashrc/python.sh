@@ -4,7 +4,11 @@
 # The only argument specifies the suffix to 'venv' in the name of the virtualenv.
 function venv () {
     DIR=$PWD
-    VENV="venv$1"
+    if [[ $1 == . ]]; then
+        VENV=".venv"
+    else
+        VENV="venv$1"
+    fi
     while [[ "$DIR" != "/"  ]]; do
         if [[ -d "$DIR/$VENV" ]]; then
             source "$DIR/$VENV/bin/activate"
