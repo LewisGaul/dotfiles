@@ -4,11 +4,11 @@
 # Source global definitions (if any)
 #-------------------------------------------------------------
 
-# for file in /etc/bashrc /etc/bash.bashrc; do
-#     if [[ -f $file ]]; then
-#         source "$file"
-#     fi
-# done
+for file in /etc/bashrc /etc/bash.bashrc /etc/profile.d/bash_completion.sh; do
+    if [[ -f $file ]]; then
+        source "$file"
+    fi
+done
 
 #-------------------------------------------------------------
 # General exports
